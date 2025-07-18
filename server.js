@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const crypto = require('crypto');
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 let server; // Add server variable to store the HTTP server instance
 
 // Store webhook configurations (in a real app, this would be in a database)
@@ -149,12 +149,13 @@ app.get('/webhooks', (req, res) => {
 // Modified server startup
 server = app.listen(port, () => {
     console.log(`\n=== Webhook Testing Server ===`);
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
+    console.log(`Railway URL: ${process.env.RAILWAY_STATIC_URL || 'http://localhost:' + port}`);
     console.log(`\nEndpoints:`);
-    console.log(`- Webhook URL: http://localhost:${port}/webhook`);
-    console.log(`- Register webhook: POST http://localhost:${port}/register-webhook`);
-    console.log(`- List webhooks: GET http://localhost:${port}/webhooks`);
-    console.log(`- Get events: GET http://localhost:${port}/events/:webhookId`);
+    console.log(`- Webhook URL: /webhook`);
+    console.log(`- Register webhook: POST /register-webhook`);
+    console.log(`- List webhooks: GET /webhooks`);
+    console.log(`- Get events: GET /events/:webhookId`);
     console.log(`\nTo register a webhook, send POST to /register-webhook:`);
     console.log({
         webhookId: "whk_your_webhook_id",
